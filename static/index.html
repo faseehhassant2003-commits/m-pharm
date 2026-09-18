@@ -9,6 +9,22 @@
   * { box-sizing:border-box; }
   body { margin:0; min-height:100vh; color:var(--ink); background:linear-gradient(135deg,#edf5f0 0%,#fbfcf8 55%,#f7eee6 100%); font-family:"Trebuchet MS",Arial,sans-serif; }
   .shell { max-width:1260px; margin:0 auto; padding:32px 28px 44px; }
+  [hidden] { display:none !important; }
+  .landing { max-width:980px; margin:0 auto; padding:5vh 0 4vh; text-align:center; }
+  .landing-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:8vh; }
+  .landing-header .brand-mark { box-shadow:0 8px 18px rgba(23,107,104,.2); }
+  .landing-copy { max-width:760px; margin:0 auto; }
+  .landing h1 { max-width:none; margin:12px 0 20px; color:var(--teal-dark); font-size:clamp(2.4rem,5vw,4.7rem); line-height:1.02; text-shadow:0 2px 0 rgba(255,255,255,.7); }
+  .landing h1::after { content:''; display:block; width:58px; height:4px; margin:24px auto 0; border-radius:4px; background:var(--coral); }
+  .landing-subtitle { max-width:700px; margin:0 auto 18px; font-family:Georgia,serif; font-size:clamp(1.1rem,2vw,1.45rem); line-height:1.45; }
+  .landing-description { max-width:680px; margin:0 auto; color:var(--muted); font-size:1rem; line-height:1.7; }
+  .landing-sections { display:grid; grid-template-columns:repeat(2,1fr); gap:18px; margin:38px 0 28px; }
+  .landing-section { min-height:166px; padding:22px; border:1px solid rgba(217,227,223,.9); border-top:3px solid var(--teal); background:rgba(255,255,255,.72); box-shadow:0 10px 24px rgba(35,62,58,.06); text-align:center; }
+  .landing-section:last-child { border-top-color:var(--coral); background:rgba(255,250,247,.78); }
+  .landing-section h2 { margin-bottom:10px; color:var(--teal-dark); font-size:1.1rem; }
+  .landing-section ul { display:inline-grid; gap:5px; margin:0; padding-left:18px; color:var(--muted); font-size:.85rem; line-height:1.4; text-align:left; }
+  .notice { margin:0; color:var(--muted); font-size:.8rem; line-height:1.6; }
+  .start-button { display:block; max-width:280px; margin:0 auto; box-shadow:0 10px 20px rgba(13,77,75,.18); }
   header { display:flex; justify-content:space-between; align-items:center; margin-bottom:34px; }
   .brand { display:flex; gap:12px; align-items:center; font-weight:bold; letter-spacing:.04em; }
   .brand-mark { display:grid; place-items:center; width:38px; height:38px; background:var(--teal); color:#fff; border-radius:50% 50% 50% 8px; font-family:Georgia,serif; font-size:1.25rem; }
@@ -74,11 +90,26 @@
   .disclaimer { max-width:700px; margin:25px 0 0; color:var(--muted); font-size:.72rem; line-height:1.5; }
   @keyframes rise { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:none; } }
   @media (max-width:850px) { .intro,.layout { grid-template-columns:1fr; gap:24px; } .intro { margin-bottom:24px; } .side-panel { min-height:0; } }
-  @media (max-width:560px) { .shell { padding:22px 16px 34px; } header { margin-bottom:28px; } .form-panel,.side-panel,.result { padding:22px 18px; } .grid,.grid.three { grid-template-columns:1fr; } .input-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } .workflow { gap:7px; } .step { font-size:.68rem; } .step-number { width:22px; height:22px; } .result-top { display:block; } }
+  @media (max-width:850px) { .landing-header { margin-bottom:8vh; } .landing-sections { grid-template-columns:1fr; } }
+  @media (max-width:560px) { .shell { padding:22px 16px 34px; } .landing { padding:4vh 0 3vh; } .landing-header { margin-bottom:8vh; } header { margin-bottom:28px; } .form-panel,.side-panel,.result { padding:22px 18px; } .grid,.grid.three { grid-template-columns:1fr; } .input-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } .workflow { gap:7px; } .step { font-size:.68rem; } .step-number { width:22px; height:22px; } .result-top { display:block; } }
 </style>
 </head>
 <body>
 <main class="shell">
+  <section class="landing" id="landingPage">
+    <div class="landing-header"><div class="brand"><span class="brand-mark">+</span><span>METABOLIC / RISK</span></div><div class="status"><span class="status-dot"></span><span>Research tool</span></div></div>
+    <div class="landing-copy">
+      <h1>Metabolic Risk Prediction Tool</h1>
+      <p class="landing-subtitle">Development and Validation of an AI-Based Metabolic Risk Prediction Tool in Patients Receiving Mood Stabilizers</p>
+      <p class="landing-description">This research tool uses clinical, anthropometric, drug-related, and laboratory parameters to classify metabolic risk into Low, Moderate, or High categories.</p>
+    </div>
+    <div class="landing-sections">
+      <section class="landing-section"><h2>What does it assess?</h2><ul><li>Body measurements and blood pressure</li><li>Glucose and lipid results</li><li>Mood stabilizer treatment</li><li>Selected clinical information</li></ul></section>
+      <section class="landing-section"><h2>Important notice</h2><p class="notice">Research / academic tool only. This prediction does not replace clinical judgment.</p></section>
+    </div>
+    <button type="button" class="start-button" id="startAssessment">Start Risk Assessment <span aria-hidden="true">→</span></button>
+  </section>
+  <div class="assessment" id="assessment" hidden>
   <header><div class="brand"><span class="brand-mark">+</span><span>METABOLIC / RISK</span></div><div class="status"><span class="status-dot"></span><span id="apiStatus">Connecting to model</span></div></header>
   <section class="intro">
     <div><div class="eyebrow">Patient entry</div><h1>A clearer view of metabolic risk.</h1><p class="lede">Enter the patient’s current measurements and treatment details to receive a model-based risk classification in seconds.</p></div>
@@ -101,6 +132,7 @@
     <section class="panel result" id="resultCard"><div id="resultBody"></div></section>
   </div>
   <p class="disclaimer">Research / academic tool only. This model was trained on a synthetic demonstration dataset and is not intended for independent clinical decision-making.</p>
+  </div>
 </main>
 
 <script>
@@ -111,6 +143,16 @@ const submitBtn = document.getElementById('submitBtn');
 const apiStatus = document.getElementById('apiStatus');
 const detailsStep = document.getElementById('detailsStep');
 const summaryStep = document.getElementById('summaryStep');
+const landingPage = document.getElementById('landingPage');
+const assessment = document.getElementById('assessment');
+const startAssessment = document.getElementById('startAssessment');
+
+startAssessment.addEventListener('click', () => {
+  landingPage.hidden = true;
+  assessment.hidden = false;
+  document.getElementById('age').focus();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});
 
 summaryStep.addEventListener('click', () => {
   resultCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
