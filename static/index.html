@@ -2,174 +2,100 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Metabolic Risk Prediction Tool</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Metabolic Risk | Patient Entry</title>
 <style>
-  :root {
-    --bg: #f4f6f8;
-    --card: #ffffff;
-    --primary: #2c5f8a;
-    --primary-dark: #204a6c;
-    --text: #1f2933;
-    --muted: #64748b;
-    --border: #d9e2ec;
-    --low: #1b8a5a;
-    --moderate: #b98900;
-    --high: #c0392b;
-  }
-  * { box-sizing: border-box; }
-  body {
-    font-family: -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    margin: 0;
-    padding: 32px 16px;
-  }
-  .wrap { max-width: 860px; margin: 0 auto; }
-  h1 { font-size: 1.5rem; margin-bottom: 4px; }
-  .subtitle { color: var(--muted); margin-bottom: 24px; font-size: 0.95rem; }
-  .card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 24px;
-    margin-bottom: 20px;
-  }
-  .grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 16px;
-  }
-  label { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 4px; color: var(--muted); }
-  input, select {
-    width: 100%;
-    padding: 8px 10px;
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    font-size: 0.95rem;
-    background: #fff;
-    color: var(--text);
-  }
-  input:focus, select:focus { outline: 2px solid var(--primary); outline-offset: 1px; }
-  .section-title { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--primary); margin: 20px 0 10px; font-weight: 700; }
-  .section-title:first-child { margin-top: 0; }
-  button {
-    background: var(--primary);
-    color: #fff;
-    border: none;
-    padding: 12px 24px;
-    border-radius: 6px;
-    font-size: 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    margin-top: 20px;
-  }
-  button:hover { background: var(--primary-dark); }
-  button:disabled { background: #9fb3c8; cursor: not-allowed; }
-  #apiUrl { font-size: 0.8rem; color: var(--muted); margin-bottom: 16px; }
-  #apiUrl input { display: inline-block; width: 260px; }
-  .result { display: none; }
-  .result.show { display: block; }
-  .risk-badge {
-    display: inline-block;
-    padding: 6px 16px;
-    border-radius: 999px;
-    color: #fff;
-    font-weight: 700;
-    font-size: 1.1rem;
-  }
-  .risk-Low { background: var(--low); }
-  .risk-Moderate { background: var(--moderate); }
-  .risk-High { background: var(--high); }
-  .score { font-size: 2rem; font-weight: 700; margin: 12px 0 4px; }
-  .probs { display: flex; gap: 12px; margin: 16px 0; flex-wrap: wrap; }
-  .prob-item { flex: 1; min-width: 100px; background: var(--bg); border-radius: 8px; padding: 10px; text-align: center; }
-  .prob-item .label { font-size: 0.75rem; color: var(--muted); }
-  .prob-item .value { font-size: 1.2rem; font-weight: 700; }
-  ul.factors { margin: 8px 0 0; padding-left: 20px; }
-  ul.factors li { margin-bottom: 4px; }
-  .error { color: var(--high); font-weight: 600; margin-top: 12px; }
-  .disclaimer {
-    font-size: 0.8rem;
-    color: var(--muted);
-    border-top: 1px solid var(--border);
-    padding-top: 12px;
-    margin-top: 24px;
-  }
+  :root { --ink:#172b2c; --muted:#657574; --line:#d9e3df; --paper:#fbfcf8; --panel:#fff; --teal:#176b68; --teal-dark:#0d4d4b; --mint:#dcefea; --coral:#d7654e; --gold:#b57a22; }
+  * { box-sizing:border-box; }
+  body { margin:0; min-height:100vh; color:var(--ink); background:linear-gradient(135deg,#edf5f0 0%,#fbfcf8 55%,#f7eee6 100%); font-family:"Trebuchet MS",Arial,sans-serif; }
+  .shell { max-width:1260px; margin:0 auto; padding:32px 28px 44px; }
+  header { display:flex; justify-content:space-between; align-items:center; margin-bottom:34px; }
+  .brand { display:flex; gap:12px; align-items:center; font-weight:bold; letter-spacing:.04em; }
+  .brand-mark { display:grid; place-items:center; width:38px; height:38px; background:var(--teal); color:#fff; border-radius:50% 50% 50% 8px; font-family:Georgia,serif; font-size:1.25rem; }
+  .status { display:flex; gap:8px; align-items:center; color:var(--muted); font-size:.78rem; }
+  .status-dot { width:8px; height:8px; background:#55a56f; border-radius:50%; }
+  .intro { display:grid; grid-template-columns:minmax(260px,.85fr) minmax(500px,1.5fr); gap:64px; align-items:end; margin-bottom:30px; }
+  .eyebrow { color:var(--teal); font-size:.74rem; font-weight:bold; letter-spacing:.15em; text-transform:uppercase; }
+  h1 { max-width:620px; margin:10px 0 14px; font-family:Georgia,serif; font-size:clamp(2.3rem,5vw,4.7rem); line-height:.98; font-weight:normal; letter-spacing:-.03em; }
+  .lede { max-width:440px; color:var(--muted); line-height:1.65; font-size:1rem; }
+  .workflow { display:flex; gap:14px; padding-bottom:14px; border-bottom:1px solid var(--line); }
+  .step { color:#a4b0ad; font-size:.78rem; font-weight:bold; }
+  .step.active { color:var(--teal); }
+  .step-number { display:inline-grid; place-items:center; width:25px; height:25px; margin-right:6px; border:1px solid currentColor; border-radius:50%; }
+  .step-button { width:auto; height:auto; margin:0; padding:0; border:0; background:none; color:#a4b0ad; font:inherit; text-align:left; }
+  .step-button:hover { background:none; color:var(--teal); transform:none; }
+  .step-button:disabled { background:none; color:#a4b0ad; cursor:not-allowed; }
+  .step-button:not(:disabled) { cursor:pointer; }
+  .layout { display:grid; grid-template-columns:minmax(0,1.25fr) minmax(280px,.75fr); gap:22px; align-items:start; }
+  .panel { background:rgba(255,255,255,.88); border:1px solid var(--line); box-shadow:0 18px 45px rgba(35,62,58,.08); }
+  .form-panel { padding:30px; }
+  .panel-heading { display:flex; justify-content:space-between; gap:20px; align-items:start; margin-bottom:24px; }
+  h2 { margin:0 0 5px; font-family:Georgia,serif; font-size:1.55rem; font-weight:normal; }
+  .panel-note { color:var(--muted); font-size:.8rem; }
+  .section { padding:22px 0; border-top:1px solid var(--line); }
+  .section:first-of-type { border-top:0; padding-top:0; }
+  .section-title { display:flex; justify-content:space-between; align-items:baseline; margin-bottom:14px; color:var(--teal-dark); font-size:.78rem; font-weight:bold; letter-spacing:.09em; text-transform:uppercase; }
+  .section-title span { color:#93a09e; font-size:.7rem; letter-spacing:0; text-transform:none; font-weight:normal; }
+  .grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; }
+  .grid.three { grid-template-columns:repeat(3,minmax(0,1fr)); }
+  label { display:block; margin-bottom:7px; color:var(--muted); font-size:.75rem; font-weight:bold; }
+  input,select { width:100%; height:43px; padding:0 12px; border:1px solid var(--line); border-radius:4px; background:#fff; color:var(--ink); font:inherit; font-size:.9rem; }
+  input:focus,select:focus { outline:2px solid var(--mint); border-color:var(--teal); }
+  .field-hint { display:block; margin-top:5px; color:#9aa6a3; font-size:.68rem; }
+  button { width:100%; height:50px; margin-top:24px; border:0; border-radius:4px; background:var(--teal); color:#fff; cursor:pointer; font:inherit; font-weight:bold; letter-spacing:.02em; transition:background .2s,transform .2s; }
+  button:hover { background:var(--teal-dark); transform:translateY(-1px); }
+  button:disabled { background:#8da9a5; cursor:wait; transform:none; }
+  .side-panel { padding:27px; background:var(--teal-dark); color:#fff; min-height:290px; }
+  .side-panel h2 { color:#fff; font-size:1.35rem; }
+  .side-panel p { color:#c5d9d5; font-size:.86rem; line-height:1.65; }
+  .side-rule { height:1px; margin:24px 0; background:rgba(255,255,255,.2); }
+  .side-list { display:grid; gap:15px; margin:0; padding:0; list-style:none; }
+  .side-list li { display:flex; gap:10px; color:#e5f0ed; font-size:.8rem; line-height:1.4; }
+  .side-list b { color:#9ed5c7; font-size:.75rem; }
+  .result { display:none; grid-column:1 / -1; padding:28px 30px; border-left:5px solid var(--teal); animation:rise .4s ease both; }
+  .result.show { display:block; }
+  .result-top { display:flex; justify-content:space-between; align-items:start; gap:20px; }
+  .risk-badge { display:inline-block; padding:6px 12px; border-radius:3px; color:#fff; font-size:.75rem; font-weight:bold; letter-spacing:.08em; text-transform:uppercase; }
+  .risk-Low { background:#4c956c; } .risk-Moderate { background:var(--gold); } .risk-High { background:var(--coral); }
+  .score { margin-top:13px; font-family:Georgia,serif; font-size:2.6rem; }
+  .score small { color:var(--muted); font-family:"Trebuchet MS",Arial,sans-serif; font-size:.78rem; }
+  .probs { display:flex; gap:9px; flex-wrap:wrap; margin:18px 0; }
+  .prob-item { min-width:105px; padding:11px 14px; background:#f2f7f3; border:1px solid var(--line); }
+  .prob-item .label { margin:0 0 4px; color:var(--muted); font-size:.68rem; }
+  .prob-item .value { font-size:1.1rem; font-weight:bold; }
+  ul.factors { margin:8px 0 0; padding-left:20px; color:var(--muted); font-size:.86rem; line-height:1.7; }
+  .error { color:var(--coral); font-weight:bold; }
+  .disclaimer { max-width:700px; margin:25px 0 0; color:var(--muted); font-size:.72rem; line-height:1.5; }
+  @keyframes rise { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:none; } }
+  @media (max-width:850px) { .intro,.layout { grid-template-columns:1fr; gap:24px; } .intro { margin-bottom:24px; } .side-panel { min-height:0; } }
+  @media (max-width:560px) { .shell { padding:22px 16px 34px; } header { margin-bottom:28px; } .form-panel,.side-panel,.result { padding:22px 18px; } .grid,.grid.three { grid-template-columns:1fr; } .workflow { gap:7px; } .step { font-size:.68rem; } .step-number { width:22px; height:22px; } .result-top { display:block; } }
 </style>
 </head>
 <body>
-<div class="wrap">
-  <h1>Metabolic Risk Prediction Tool</h1>
-  <p class="subtitle">AI-based metabolic risk classification for patients receiving mood stabilizers</p>
-
-  <div id="apiUrl">
-    <span id="apiStatus"></span>
+<main class="shell">
+  <header><div class="brand"><span class="brand-mark">+</span><span>METABOLIC / RISK</span></div><div class="status"><span class="status-dot"></span><span id="apiStatus">Connecting to model</span></div></header>
+  <section class="intro">
+    <div><div class="eyebrow">Patient entry</div><h1>A clearer view of metabolic risk.</h1><p class="lede">Enter the patient’s current measurements and treatment details to receive a model-based risk classification in seconds.</p></div>
+    <div class="workflow"><div class="step active" id="detailsStep"><span class="step-number">1</span>Patient details</div><button type="button" class="step step-button" id="summaryStep" disabled><span class="step-number">2</span>Risk summary</button></div>
+  </section>
+  <div class="layout">
+    <section class="panel form-panel">
+      <div class="panel-heading"><div><h2>Build a patient profile</h2><div class="panel-note">Required fields are marked by the browser.</div></div><div class="eyebrow">01 / 02</div></div>
+      <form id="patientForm">
+        <div class="section"><div class="section-title">Demographics <span>Who is being assessed?</span></div><div class="grid"><div><label for="age">Age, years</label><input type="number" id="age" placeholder="Enter age" required></div><div><label for="gender">Gender</label><select id="gender" required><option value="" selected disabled>Select gender</option><option>Male</option><option>Female</option></select></div></div></div>
+        <div class="section"><div class="section-title">Body measures <span>Anthropometric profile</span></div><div class="grid"><div><label for="bmi">BMI, kg/m²</label><input type="number" step="0.1" id="bmi" placeholder="Enter BMI" required></div><div><label for="waist">Waist circumference, cm</label><input type="number" step="0.1" id="waist" placeholder="Enter waist circumference" required></div></div></div>
+        <div class="section"><div class="section-title">Treatment <span>Current mood stabilizer</span></div><div class="grid three"><div><label for="drug">Medication</label><select id="drug" required><option value="" selected disabled>Select medication</option><option>Lithium</option><option>Valproate</option><option>Carbamazepine</option><option>Others</option></select></div><div><label for="dose">Dose, mg/day</label><input type="number" id="dose" placeholder="Enter dose" required></div><div><label for="duration">Duration, months</label><input type="number" id="duration" placeholder="Enter duration" required></div></div></div>
+        <div class="section"><div class="section-title">Clinical measures <span>Most recent reading</span></div><div class="grid"><div><label for="sbp">Systolic BP, mmHg</label><input type="number" step="0.1" id="sbp" placeholder="Enter systolic BP" required></div><div><label for="dbp">Diastolic BP, mmHg</label><input type="number" step="0.1" id="dbp" placeholder="Enter diastolic BP" required></div></div></div>
+        <div class="section"><div class="section-title">Laboratory measures <span>Use current results</span></div><div class="grid"><div><label for="fbg">Fasting glucose, mg/dL</label><input type="number" step="0.1" id="fbg" placeholder="Enter fasting glucose" required></div><div><label for="tg">Triglycerides, mg/dL</label><input type="number" step="0.1" id="tg" placeholder="Enter triglycerides" required></div><div><label for="hdl">HDL, mg/dL</label><input type="number" step="0.1" id="hdl" placeholder="Enter HDL" required></div><div><label for="ldl">LDL, mg/dL</label><input type="number" step="0.1" id="ldl" placeholder="Enter LDL" required></div></div></div>
+        <div class="section"><div class="section-title">Optional context <span>Can be left blank</span></div><div class="grid"><div><label for="ham_d">HAM-D score</label><input type="number" id="ham_d" placeholder="Optional"><span class="field-hint">Depression symptom score</span></div><div><label for="cssrs">C-SSRS score</label><input type="number" id="cssrs" placeholder="Optional"><span class="field-hint">Suicide risk screening score</span></div></div></div>
+        <button type="submit" id="submitBtn">Generate risk summary <span aria-hidden="true">→</span></button>
+      </form>
+    </section>
+    <aside class="panel side-panel"><div class="eyebrow" style="color:#9ed5c7">About this assessment</div><h2>One profile. One focused readout.</h2><p>The model weighs demographic, treatment, clinical, and laboratory information to classify metabolic risk.</p><div class="side-rule"></div><ul class="side-list"><li><b>01</b><span>Complete the profile using the latest available measurements.</span></li><li><b>02</b><span>Review the category, confidence score, and contributing factors.</span></li><li><b>03</b><span>Use the result as research support alongside clinical judgment.</span></li></ul></aside>
+    <section class="panel result" id="resultCard"><div id="resultBody"></div></section>
   </div>
-
-  <div class="card">
-    <form id="patientForm">
-      <div class="section-title">Demographics</div>
-      <div class="grid">
-        <div><label>Age (years)</label><input type="number" id="age" value="45" required></div>
-        <div><label>Gender</label>
-          <select id="gender"><option>Male</option><option selected>Female</option></select>
-        </div>
-      </div>
-
-      <div class="section-title">Anthropometric</div>
-      <div class="grid">
-        <div><label>BMI (kg/m²)</label><input type="number" step="0.1" id="bmi" value="31.2" required></div>
-        <div><label>Waist circumference (cm)</label><input type="number" step="0.1" id="waist" value="96"></div>
-      </div>
-
-      <div class="section-title">Drug therapy</div>
-      <div class="grid">
-        <div><label>Mood stabilizer</label>
-          <select id="drug">
-            <option>Lithium</option>
-            <option selected>Valproate</option>
-            <option>Carbamazepine</option>
-            <option>Others</option>
-          </select>
-        </div>
-        <div><label>Dose (mg/day)</label><input type="number" id="dose" value="1200"></div>
-        <div><label>Duration of therapy (months)</label><input type="number" id="duration" value="36"></div>
-      </div>
-
-      <div class="section-title">Clinical parameters</div>
-      <div class="grid">
-        <div><label>Systolic BP (mmHg)</label><input type="number" step="0.1" id="sbp" value="138"></div>
-        <div><label>Diastolic BP (mmHg)</label><input type="number" step="0.1" id="dbp" value="88"></div>
-      </div>
-
-      <div class="section-title">Laboratory parameters</div>
-      <div class="grid">
-        <div><label>Fasting blood glucose (mg/dL)</label><input type="number" step="0.1" id="fbg" value="118"></div>
-        <div><label>Triglycerides (mg/dL)</label><input type="number" step="0.1" id="tg" value="210"></div>
-        <div><label>HDL (mg/dL)</label><input type="number" step="0.1" id="hdl" value="38"></div>
-        <div><label>LDL (mg/dL)</label><input type="number" step="0.1" id="ldl" value="130"></div>
-      </div>
-
-      <div class="section-title">Optional</div>
-      <div class="grid">
-        <div><label>HAM-D score</label><input type="number" id="ham_d" value="14"></div>
-        <div><label>C-SSRS score</label><input type="number" id="cssrs" value="0"></div>
-      </div>
-
-      <button type="submit" id="submitBtn">Predict Risk</button>
-    </form>
-  </div>
-
-  <div class="card result" id="resultCard">
-    <div id="resultBody"></div>
-  </div>
-
-  <p class="disclaimer">
-    Research / academic tool only — not a substitute for clinical judgment.
-    Predictions are generated by a model trained on a synthetic demonstration
-    dataset and are not intended for independent clinical decision-making.
-  </p>
-</div>
+  <p class="disclaimer">Research / academic tool only. This model was trained on a synthetic demonstration dataset and is not intended for independent clinical decision-making.</p>
+</main>
 
 <script>
 const form = document.getElementById('patientForm');
@@ -177,18 +103,25 @@ const resultCard = document.getElementById('resultCard');
 const resultBody = document.getElementById('resultBody');
 const submitBtn = document.getElementById('submitBtn');
 const apiStatus = document.getElementById('apiStatus');
+const detailsStep = document.getElementById('detailsStep');
+const summaryStep = document.getElementById('summaryStep');
+
+summaryStep.addEventListener('click', () => {
+  resultCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+});
 
 async function checkHealth() {
   try {
     const res = await fetch('/health');
     if (res.ok) {
-      apiStatus.textContent = '';
+        apiStatus.textContent = 'Model ready';
+        apiStatus.parentElement.style.color = '#4c956c';
     } else {
       throw new Error();
     }
   } catch {
-    apiStatus.textContent = '⚠ Service temporarily unavailable — please refresh in a moment.';
-    apiStatus.style.color = '#c0392b';
+    apiStatus.textContent = 'Service unavailable';
+    apiStatus.parentElement.style.color = '#d7654e';
   }
 }
 checkHealth();
@@ -196,7 +129,7 @@ checkHealth();
 form.addEventListener('submit', async (e) => {
   e.preventDefault();
   submitBtn.disabled = true;
-  submitBtn.textContent = 'Predicting…';
+  submitBtn.textContent = 'Calculating risk...';
 
   const payload = {
     age: parseFloat(document.getElementById('age').value),
@@ -233,11 +166,14 @@ form.addEventListener('submit', async (e) => {
       const factors = data.key_factors.map(f => `<li>${f}</li>`).join('');
       resultBody.innerHTML = `
         <span class="risk-badge risk-${data.risk_category}">${data.risk_category} Risk</span>
-        <div class="score">${data.risk_score}<span style="font-size:1rem;color:var(--muted);">/100 confidence</span></div>
+        <div class="score">${data.risk_score}<small>/100 model confidence</small></div>
         <div class="probs">${probs}</div>
         <div><strong>Key factors:</strong></div>
         <ul class="factors">${factors}</ul>
       `;
+      summaryStep.disabled = false;
+      summaryStep.classList.add('active');
+      detailsStep.classList.remove('active');
     }
     resultCard.classList.add('show');
   } catch (err) {
@@ -245,7 +181,7 @@ form.addEventListener('submit', async (e) => {
     resultCard.classList.add('show');
   } finally {
     submitBtn.disabled = false;
-    submitBtn.textContent = 'Predict Risk';
+    submitBtn.innerHTML = 'Generate risk summary <span aria-hidden="true">→</span>';
   }
 });
 </script>
