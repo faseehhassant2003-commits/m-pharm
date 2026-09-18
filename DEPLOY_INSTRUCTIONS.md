@@ -11,6 +11,7 @@ to install or run.
 - `metabolic_risk_model.pkl` — trained model
 - `static/index.html` — the web page (served automatically at `/`)
 - `requirements.txt` — exact library versions needed
+- `runtime.txt` — pins the Python version Render uses (important — see note below)
 
 ## Steps
 
@@ -26,7 +27,7 @@ https://github.com/signup
 ### 3. Upload these files to the repository
 Easiest way (no command line needed):
 - On your new repo's page, click "uploading an existing file"
-- Drag in: `app.py`, `predict.py`, `metabolic_risk_model.pkl`, `requirements.txt`
+- Drag in: `app.py`, `predict.py`, `metabolic_risk_model.pkl`, `requirements.txt`, `runtime.txt`
 - Create a folder named `static` and upload `index.html` into it
   (GitHub lets you do this by naming the uploaded file `static/index.html`)
 - Click "Commit changes"
@@ -68,3 +69,24 @@ Opening it shows the same web form you tested locally — clicking
   Render automatically rebuilds and redeploys.
 - **Keep `metabolic_risk_model.pkl` in the repo** — it's the trained
   model; the app can't make predictions without it.
+
+## Troubleshooting
+
+**Build fails while compiling `pandas` (e.g. "Preparing metadata
+(pyproject.toml) did not run successfully" or a Meson/Cython/C++ error
+mentioning `aggregations.pyx`):**
+
+This means Render picked a very new Python version (e.g. 3.14) that
+doesn't have a ready-made install for the pinned `pandas`/`numpy`
+versions, so pip tries to compile pandas from source and that fails.
+
+Fix: make sure `runtime.txt` (containing `python-3.11.9`) is uploaded to
+your repo alongside the other files, then trigger a redeploy:
+- Go to your Render service → "Manual Deploy" → "Clear build cache & deploy"
+- Check the build log — it should now say `Using Python version 3.11.9`
+  near the top instead of 3.14.x
+
+If it still doesn't pick it up, go to your service → "Environment" tab →
+add an environment variable `PYTHON_VERSION` = `3.11.9`, save, and
+redeploy.
+
