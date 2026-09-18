@@ -59,6 +59,12 @@
   .risk-Low { background:#4c956c; } .risk-Moderate { background:var(--gold); } .risk-High { background:var(--coral); }
   .score { margin-top:13px; font-family:Georgia,serif; font-size:2.6rem; }
   .score small { color:var(--muted); font-family:"Trebuchet MS",Arial,sans-serif; font-size:.78rem; }
+  .input-summary { margin:24px 0 20px; padding-top:20px; border-top:1px solid var(--line); }
+  .input-summary h3 { margin:0 0 12px; color:var(--teal-dark); font-size:.78rem; letter-spacing:.09em; text-transform:uppercase; }
+  .input-grid { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:9px; }
+  .input-item { padding:10px 12px; background:#f7faf7; border:1px solid var(--line); }
+  .input-item .label { margin:0 0 4px; color:var(--muted); font-size:.68rem; }
+  .input-item .value { font-size:.88rem; font-weight:bold; }
   .probs { display:flex; gap:9px; flex-wrap:wrap; margin:18px 0; }
   .prob-item { min-width:105px; padding:11px 14px; background:#f2f7f3; border:1px solid var(--line); }
   .prob-item .label { margin:0 0 4px; color:var(--muted); font-size:.68rem; }
@@ -68,7 +74,7 @@
   .disclaimer { max-width:700px; margin:25px 0 0; color:var(--muted); font-size:.72rem; line-height:1.5; }
   @keyframes rise { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:none; } }
   @media (max-width:850px) { .intro,.layout { grid-template-columns:1fr; gap:24px; } .intro { margin-bottom:24px; } .side-panel { min-height:0; } }
-  @media (max-width:560px) { .shell { padding:22px 16px 34px; } header { margin-bottom:28px; } .form-panel,.side-panel,.result { padding:22px 18px; } .grid,.grid.three { grid-template-columns:1fr; } .workflow { gap:7px; } .step { font-size:.68rem; } .step-number { width:22px; height:22px; } .result-top { display:block; } }
+  @media (max-width:560px) { .shell { padding:22px 16px 34px; } header { margin-bottom:28px; } .form-panel,.side-panel,.result { padding:22px 18px; } .grid,.grid.three { grid-template-columns:1fr; } .input-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } .workflow { gap:7px; } .step { font-size:.68rem; } .step-number { width:22px; height:22px; } .result-top { display:block; } }
 </style>
 </head>
 <body>
@@ -164,9 +170,26 @@ form.addEventListener('submit', async (e) => {
         .map(([k, v]) => `<div class="prob-item"><div class="label">${k}</div><div class="value">${v}%</div></div>`)
         .join('');
       const factors = data.key_factors.map(f => `<li>${f}</li>`).join('');
+      const inputItems = [
+        ['Age', `${payload.age} years`],
+        ['Gender', payload.gender],
+        ['BMI', `${payload.bmi} kg/m²`],
+        ['Waist', `${payload.waist} cm`],
+        ['Medication', payload.drug],
+        ['Dose', `${payload.dose} mg/day`],
+        ['Duration', `${payload.duration} months`],
+        ['Blood pressure', `${payload.sbp}/${payload.dbp} mmHg`],
+        ['Fasting glucose', `${payload.fbg} mg/dL`],
+        ['Triglycerides', `${payload.tg} mg/dL`],
+        ['HDL', `${payload.hdl} mg/dL`],
+        ['LDL', `${payload.ldl} mg/dL`],
+        ['HAM-D score', payload.ham_d ?? 'Not provided'],
+        ['C-SSRS score', payload.cssrs ?? 'Not provided'],
+      ].map(([label, value]) => `<div class="input-item"><div class="label">${label}</div><div class="value">${value}</div></div>`).join('');
       resultBody.innerHTML = `
         <span class="risk-badge risk-${data.risk_category}">${data.risk_category} Risk</span>
         <div class="score">${data.risk_score}<small>/100 model confidence</small></div>
+        <div class="input-summary"><h3>Entered patient data</h3><div class="input-grid">${inputItems}</div></div>
         <div class="probs">${probs}</div>
         <div><strong>Key factors:</strong></div>
         <ul class="factors">${factors}</ul>
